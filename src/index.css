@@ -1,14 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
-  
-  --color-brand-bg: var(--brand-bg);
-  --color-brand-fg: var(--brand-fg);
-  --color-brand-dark: var(--brand-dark);
-}
+/* --- Legacy tokens (used by src/legacy/** only — do not change) --- */
 
 :root {
   --brand-bg: #fd3535;
@@ -20,6 +14,59 @@
   --brand-bg: #0a0a0a;
   --brand-fg: #fbf5e8;
   --brand-dark: #fd3535;
+}
+
+/* --- Workspace design system tokens (dark is the primary/default theme) --- */
+
+:root {
+  --background: #0a0a0a;
+  --surface: #141414;
+  --surface-elevated: #1c1c1c;
+  --border-subtle: rgba(251, 245, 232, 0.08);
+  --text-primary: #fbf5e8;
+  --text-secondary: rgba(251, 245, 232, 0.65);
+  --text-muted: rgba(251, 245, 232, 0.4);
+  --accent: #fd3535;
+  --accent-hover: #ff5252;
+  --accent-foreground: #fbf5e8;
+  --danger: #fd3535;
+}
+
+/* Future light mode — values defined so the system supports it later; not wired to a toggle yet. */
+[data-theme='light'] {
+  --background: #faf9f7;
+  --surface: #ffffff;
+  --surface-elevated: #f2f1ee;
+  --border-subtle: rgba(23, 23, 23, 0.1);
+  --text-primary: #171717;
+  --text-secondary: rgba(23, 23, 23, 0.65);
+  --text-muted: rgba(23, 23, 23, 0.4);
+  --accent: #fd3535;
+  --accent-hover: #e02e2e;
+  --accent-foreground: #fbf5e8;
+  --danger: #fd3535;
+}
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-dark: var(--brand-dark);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
 }
 
 @layer base {
