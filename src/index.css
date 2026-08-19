@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-dark: var(--brand-dark);
+}
+
+:root {
+  --brand-bg: #fd3535;
+  --brand-fg: #fbf5e8;
+  --brand-dark: #171717;
+}
+
+:root.dark {
+  --brand-bg: #0a0a0a;
+  --brand-fg: #fbf5e8;
+  --brand-dark: #fd3535;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-bg text-brand-fg antialiased selection:bg-brand-fg selection:text-brand-bg transition-colors duration-500;
+  }
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}

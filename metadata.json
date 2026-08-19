@@ -1,0 +1,6 @@
+{
+  "name": "Archetypia [Build v.0.2]",
+  "description": "Multimodal AI Art Director that transforms visual references and briefings into structured brand identities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
