@@ -1,52 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { ArrowLeft, RefreshCcw } from 'lucide-react';
 import { PageContainer } from '../../components/layout/PageContainer';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Button } from '../../components/ui/Button';
-import { getProject } from './projectService';
 import { ProjectSubNav } from './ProjectSubNav';
-import type { Project } from './types';
-import type { CreativeReference } from './references/types';
+import { useCurrentProject } from './CurrentProjectContext';
+import { summarizeIssues } from '../issues/pulse';
 
-type Status = 'loading' | 'not-found' | 'error' | 'ready';
-
-export interface ProjectOutletContext {
-  project: Project;
-  setProject: (project: Project) => void;
-  references: CreativeReference[];
-  setReferences: React.Dispatch<React.SetStateAction<CreativeReference[]>>;
+function pulseText(issues: ReturnType<typeof summarizeIssues>): string | null {
+  if (issues.total === 0) return null;
+  if (issues.inProgress > 0) return `${issues.inProgress} in progress · ${issues.open} open`;
+  if (issues.open > 0) return `${issues.open} open`;
+  return 'All work done';
 }
 
 export function ProjectLayout() {
-  const { projectId } = useParams<{ projectId: string }>();
-  const [project, setProject] = useState<Project | null>(null);
-  const [references, setReferences] = useState<CreativeReference[]>([]);
-  const [status, setStatus] = useState<Status>('loading');
-  const [error, setError] = useState<string | null>(null);
+  const { project, status, error, reload, issues } = useCurrentProject();
 
-  const load = () => {
-    if (!projectId) return;
-    setStatus('loading');
-    setError(null);
-    getProject(projectId)
-      .then((result) => {
-        if (!result) {
-          setStatus('not-found');
-        } else {
-          setProject(result);
-          setStatus('ready');
-        }
-      })
-      .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Failed to load project.');
-        setStatus('error');
-      });
-  };
-
-  useEffect(load, [projectId]);
-
-  if (status === 'loading') {
+  if (status === 'idle' || status === 'loading') {
     return (
       <PageContainer>
         <div className="py-20 flex justify-center">
@@ -71,7 +42,7 @@ export function ProjectLayout() {
           title="Couldn't load this project"
           description={error ?? undefined}
           action={
-            <Button variant="secondary" onClick={load}>
+            <Button variant="secondary" onClick={reload}>
               <RefreshCcw size={12} />
               Retry
             </Button>
@@ -83,26 +54,33 @@ export function ProjectLayout() {
 
   if (!project) return null;
 
+  const pulse = issues ? pulseText(summarizeIssues(issues)) : null;
+
   return (
     <PageContainer wide>
       <div className="space-y-4 mb-2">
         <Link
           to="/projects"
-          className="inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors"
+          className="md:hidden inline-flex items-center gap-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors"
         >
           <ArrowLeft size={12} />
           Projects
         </Link>
         <div>
-          <h1 className="text-xl font-semibold text-text-primary">{project.name}</h1>
+          <div className="flex items-baseline gap-3 flex-wrap">
+            <h1 className="text-xl font-semibold text-text-primary">{project.name}</h1>
+            {pulse && <span className="text-[12px] text-text-muted">{pulse}</span>}
+          </div>
           {project.description && (
             <p className="mt-1 text-[13px] text-text-secondary leading-relaxed max-w-2xl">{project.description}</p>
           )}
         </div>
-        <ProjectSubNav />
+        <div className="md:hidden">
+          <ProjectSubNav />
+        </div>
       </div>
       <div className="border-t border-border pt-6">
-        <Outlet context={{ project, setProject, references, setReferences } satisfies ProjectOutletContext} />
+        <Outlet />
       </div>
     </PageContainer>
   );

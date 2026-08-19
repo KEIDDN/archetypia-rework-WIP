@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 const TABS = [
   { to: '.', label: 'Overview', end: true },
-  { to: 'issues', label: 'Issues', end: false },
+  { to: 'issues', label: 'Work', end: false },
   { to: 'brief', label: 'Brief', end: false },
   { to: 'references', label: 'References', end: false }
 ];

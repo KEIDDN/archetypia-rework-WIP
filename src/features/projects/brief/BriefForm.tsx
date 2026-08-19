@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Textarea, FieldLabel } from '../../../components/ui/Input';
 import type { CreativeBrief } from './types';
+
+function autoResize(el: HTMLTextAreaElement) {
+  el.style.height = 'auto';
+  el.style.height = `${el.scrollHeight}px`;
+}
 
 type CoreField = 'context' | 'objective' | 'audience' | 'personality';
 type OptionalField = 'positioning' | 'constraints';
@@ -56,8 +61,13 @@ export function BriefForm({
   );
 
   const setField = (key: keyof CreativeBrief) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    autoResize(e.target);
     onChange({ ...brief, [key]: e.target.value });
   };
+
+  const initResize = useCallback((el: HTMLTextAreaElement | null) => {
+    if (el) autoResize(el);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -66,6 +76,8 @@ export function BriefForm({
           <div key={field.key}>
             <FieldLabel>{field.label}</FieldLabel>
             <Textarea
+              ref={initResize}
+              variant="ghost"
               rows={2}
               value={brief[field.key]}
               onChange={setField(field.key)}
@@ -93,6 +105,8 @@ export function BriefForm({
             <div key={field.key}>
               <FieldLabel>{field.label}</FieldLabel>
               <Textarea
+                ref={initResize}
+                variant="ghost"
                 rows={2}
                 value={brief[field.key]}
                 onChange={setField(field.key)}

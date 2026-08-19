@@ -26,9 +26,9 @@ export function ProjectsListPage() {
   useEffect(load, []);
 
   return (
-    <PageContainer>
+    <PageContainer wide>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-lg font-semibold text-text-primary">Projects</h1>
+        <h1 className="text-xl font-semibold text-text-primary">Projects</h1>
         <Button onClick={() => setModalOpen(true)}>
           <Plus size={14} />
           New Project
@@ -69,7 +69,7 @@ export function ProjectsListPage() {
       )}
 
       {!error && projects !== null && projects.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

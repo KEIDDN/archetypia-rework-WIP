@@ -1,10 +1,21 @@
 import { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function NavigationItem({ to, icon, children }: { to: string; icon?: ReactNode; children: ReactNode }) {
+export function NavigationItem({
+  to,
+  icon,
+  end,
+  children
+}: {
+  to: string;
+  icon?: ReactNode;
+  end?: boolean;
+  children: ReactNode;
+}) {
   return (
     <NavLink
       to={to}
+      end={end}
       className={({ isActive }) =>
         `flex items-center gap-2.5 pl-2.5 pr-3 py-1.5 rounded-md text-[13px] border-l-2 transition-colors ${
           isActive
