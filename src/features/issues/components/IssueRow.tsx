@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { CalendarDays, Trash2 } from 'lucide-react';
+import { CalendarDays, GripVertical, Trash2 } from 'lucide-react';
 import { formatDueDate, isOverdue } from '../../../lib/dueDate';
 import { StatusSelect } from './StatusSelect';
 import { PrioritySelect } from './PrioritySelect';
@@ -10,15 +10,27 @@ import type { Label } from '../labels/types';
 export function IssueRow({
   issue,
   label,
+  draggable,
+  dragOver,
   onStatusChange,
   onPriorityChange,
-  onDelete
+  onDelete,
+  onDragStart,
+  onDragEnd,
+  onDragOverRow,
+  onDropRow
 }: {
   issue: Issue;
   label: Label | null;
+  draggable: boolean;
+  dragOver: boolean;
   onStatusChange: (status: IssueStatus) => void;
   onPriorityChange: (priority: IssuePriority) => void;
   onDelete: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  onDragOverRow?: (e: React.DragEvent) => void;
+  onDropRow?: (e: React.DragEvent) => void;
 }) {
   const navigate = useNavigate();
   const overdue = issue.due_date ? isOverdue(issue.due_date, issue.status) : false;
@@ -33,8 +45,31 @@ export function IssueRow({
       onKeyDown={(e) => {
         if (e.key === 'Enter') open();
       }}
-      className="group flex items-center gap-3 px-3 py-2 rounded-md hover:bg-surface transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-accent/30"
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragOver={(e) => {
+        if (!draggable) return;
+        e.preventDefault();
+        onDragOverRow?.(e);
+      }}
+      onDrop={(e) => {
+        if (!draggable) return;
+        e.preventDefault();
+        e.stopPropagation();
+        onDropRow?.(e);
+      }}
+      className={`group flex items-center gap-2 px-3 py-2 rounded-md hover:bg-surface transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-accent/30 border-t-2 ${
+        dragOver ? 'border-accent' : 'border-transparent'
+      }`}
     >
+      {draggable ? (
+        <GripVertical
+          size={12}
+          className="text-text-muted opacity-0 group-hover:opacity-100 transition-opacity cursor-grab flex-shrink-0 -ml-1"
+        />
+      ) : null}
+
       <span onClick={(e) => e.stopPropagation()}>
         <StatusSelect value={issue.status} onChange={onStatusChange} />
       </span>

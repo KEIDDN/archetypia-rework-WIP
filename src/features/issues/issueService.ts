@@ -15,6 +15,8 @@ export async function listIssues(projectId: string): Promise<Issue[]> {
 }
 
 export async function createIssue(input: CreateIssueInput): Promise<Issue> {
+  const position = -Date.now();
+
   if (!isSupabaseConfigured) {
     const issue: Issue = {
       id: crypto.randomUUID(),
@@ -26,6 +28,7 @@ export async function createIssue(input: CreateIssueInput): Promise<Issue> {
       priority: 'none',
       due_date: null,
       label_id: null,
+      position,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
@@ -40,7 +43,7 @@ export async function createIssue(input: CreateIssueInput): Promise<Issue> {
 
   const { data, error } = await supabase
     .from('issues')
-    .insert({ project_id: input.project_id, title: input.title, owner_id: ownerId })
+    .insert({ project_id: input.project_id, title: input.title, owner_id: ownerId, position })
     .select('*')
     .single();
 
@@ -95,6 +98,19 @@ export async function updateIssueDueDate(id: string, dueDate: string | null): Pr
     return;
   }
   const { error } = await supabase.from('issues').update({ due_date: dueDate }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function moveIssue(id: string, patch: { status: IssueStatus; position: number }): Promise<void> {
+  if (!isSupabaseConfigured) {
+    const issue = localIssues.find((i) => i.id === id);
+    if (issue) {
+      issue.status = patch.status;
+      issue.position = patch.position;
+    }
+    return;
+  }
+  const { error } = await supabase.from('issues').update(patch).eq('id', id);
   if (error) throw error;
 }
 

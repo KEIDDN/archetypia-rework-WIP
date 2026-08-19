@@ -11,6 +11,7 @@ export interface Issue {
   priority: IssuePriority;
   due_date: string | null;
   label_id: string | null;
+  position: number;
   created_at: string;
   updated_at: string;
 }

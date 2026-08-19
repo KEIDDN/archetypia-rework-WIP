@@ -3,7 +3,7 @@ import { PRIORITY_LABELS, PRIORITY_ORDER, STATUS_LABELS, STATUS_ORDER } from '..
 import type { IssuePriority, IssueStatus } from '../types';
 import type { Label } from '../labels/types';
 
-export type IssueSortKey = 'priority' | 'due_date' | 'created' | 'title';
+export type IssueSortKey = 'manual' | 'priority' | 'due_date' | 'created' | 'title';
 
 export interface IssueFilters {
   status: IssueStatus | 'all';
@@ -13,6 +13,7 @@ export interface IssueFilters {
 }
 
 const SORT_LABELS: Record<IssueSortKey, string> = {
+  manual: 'Manual',
   priority: 'Priority',
   due_date: 'Due date',
   created: 'Created',

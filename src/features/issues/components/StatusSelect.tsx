@@ -3,8 +3,8 @@ import { STATUS_LABELS, STATUS_ORDER, type IssueStatus } from '../types';
 
 const STATUS_ICON: Record<IssueStatus, React.ReactNode> = {
   todo: <Circle size={13} className="text-text-muted" />,
-  in_progress: <CircleDot size={13} className="text-accent" />,
-  done: <CheckCircle2 size={13} className="text-text-secondary" />
+  in_progress: <CircleDot size={13} className="text-signal-blue" />,
+  done: <CheckCircle2 size={13} className="text-signal-green" />
 };
 
 export function StatusSelect({ value, onChange }: { value: IssueStatus; onChange: (status: IssueStatus) => void }) {

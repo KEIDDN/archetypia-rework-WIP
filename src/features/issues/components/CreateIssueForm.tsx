@@ -32,7 +32,7 @@ export function CreateIssueForm({
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Add an issue…"
+        placeholder="Add work…"
         disabled={submitting}
         className="flex-1 min-w-0 bg-transparent text-[13px] text-text-primary placeholder:text-text-muted focus:outline-none disabled:opacity-50"
       />

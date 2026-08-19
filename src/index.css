@@ -30,6 +30,9 @@
   --accent-hover: #ff5252;
   --accent-foreground: #fbf5e8;
   --danger: #fd3535;
+  --signal-blue: #5b9dff;
+  --signal-amber: #f2a93b;
+  --signal-green: #3ecf8e;
 }
 
 /* Future light mode — values defined so the system supports it later; not wired to a toggle yet. */
@@ -45,6 +48,9 @@
   --accent-hover: #e02e2e;
   --accent-foreground: #fbf5e8;
   --danger: #fd3535;
+  --signal-blue: #3373e0;
+  --signal-amber: #cc860e;
+  --signal-green: #199a67;
 }
 
 @theme {
@@ -67,6 +73,9 @@
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --color-danger: var(--danger);
+  --color-signal-blue: var(--signal-blue);
+  --color-signal-amber: var(--signal-amber);
+  --color-signal-green: var(--signal-green);
 }
 
 @layer base {
