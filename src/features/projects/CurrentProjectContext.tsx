@@ -2,8 +2,10 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { useLocation } from 'react-router-dom';
 import { getProject } from './projectService';
 import { listIssues } from '../issues/issueService';
+import { listLabels } from '../issues/labels/labelService';
 import type { Project } from './types';
 import type { Issue } from '../issues/types';
+import type { Label } from '../issues/labels/types';
 import type { CreativeReference } from './references/types';
 
 export type ProjectLoadStatus = 'idle' | 'loading' | 'not-found' | 'error' | 'ready';
@@ -17,6 +19,8 @@ interface CurrentProjectContextValue {
   reload: () => void;
   issues: Issue[] | null;
   setIssues: React.Dispatch<React.SetStateAction<Issue[] | null>>;
+  labels: Label[];
+  setLabels: React.Dispatch<React.SetStateAction<Label[]>>;
   references: CreativeReference[];
   setReferences: React.Dispatch<React.SetStateAction<CreativeReference[]>>;
 }
@@ -46,6 +50,7 @@ export function CurrentProjectProvider({ children }: { children: ReactNode }) {
 
   const [project, setProject] = useState<Project | null>(null);
   const [issues, setIssues] = useState<Issue[] | null>(null);
+  const [labels, setLabels] = useState<Label[]>([]);
   const [references, setReferences] = useState<CreativeReference[]>([]);
   const [status, setStatus] = useState<ProjectLoadStatus>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -53,14 +58,15 @@ export function CurrentProjectProvider({ children }: { children: ReactNode }) {
   const load = useCallback((id: string) => {
     setStatus('loading');
     setError(null);
-    Promise.all([getProject(id), listIssues(id)])
-      .then(([proj, issueList]) => {
+    Promise.all([getProject(id), listIssues(id), listLabels(id)])
+      .then(([proj, issueList, labelList]) => {
         if (!proj) {
           setStatus('not-found');
           return;
         }
         setProject(proj);
         setIssues(issueList);
+        setLabels(labelList);
         setStatus('ready');
       })
       .catch((err) => {
@@ -73,6 +79,7 @@ export function CurrentProjectProvider({ children }: { children: ReactNode }) {
     if (!projectId) {
       setProject(null);
       setIssues(null);
+      setLabels([]);
       setReferences([]);
       setStatus('idle');
       return;
@@ -87,7 +94,20 @@ export function CurrentProjectProvider({ children }: { children: ReactNode }) {
 
   return (
     <CurrentProjectContext.Provider
-      value={{ projectId, project, setProject, status, error, reload, issues, setIssues, references, setReferences }}
+      value={{
+        projectId,
+        project,
+        setProject,
+        status,
+        error,
+        reload,
+        issues,
+        setIssues,
+        labels,
+        setLabels,
+        references,
+        setReferences
+      }}
     >
       {children}
     </CurrentProjectContext.Provider>

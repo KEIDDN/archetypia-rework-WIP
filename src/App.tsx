@@ -10,6 +10,7 @@ import { ProjectOverviewPage } from './features/projects/pages/ProjectOverviewPa
 import { ProjectIssuesPage } from './features/projects/pages/ProjectIssuesPage';
 import { ProjectBriefPage } from './features/projects/pages/ProjectBriefPage';
 import { ProjectReferencesPage } from './features/projects/pages/ProjectReferencesPage';
+import { IssueDetailPage } from './features/projects/pages/IssueDetailPage';
 import CreativeDirectionApp from './legacy/CreativeDirectionApp';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
                 <Route path="brief" element={<ProjectBriefPage />} />
                 <Route path="references" element={<ProjectReferencesPage />} />
               </Route>
+              <Route path=":projectId/issues/:issueId" element={<IssueDetailPage />} />
             </Route>
           </Route>
 

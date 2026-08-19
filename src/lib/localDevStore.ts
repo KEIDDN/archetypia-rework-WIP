@@ -8,6 +8,7 @@
 import { normalizeBrief } from '../features/projects/brief/types';
 import type { Project } from '../features/projects/types';
 import type { Issue } from '../features/issues/types';
+import type { Label } from '../features/issues/labels/types';
 
 export const LOCAL_DEV_USER_ID = 'local-dev-user';
 
@@ -24,3 +25,5 @@ export const localProjects: Project[] = [
 ];
 
 export const localIssues: Issue[] = [];
+
+export const localLabels: Label[] = [];

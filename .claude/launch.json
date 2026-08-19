@@ -18,6 +18,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["vite", "preview", "--port=3098", "--host=0.0.0.0"],
       "port": 3098
+    },
+    {
+      "name": "archetypia-dev-3199",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port=3199", "--host=0.0.0.0"],
+      "port": 3199
     }
   ]
 }

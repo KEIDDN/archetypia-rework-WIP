@@ -9,6 +9,8 @@ export interface Issue {
   description: string | null;
   status: IssueStatus;
   priority: IssuePriority;
+  due_date: string | null;
+  label_id: string | null;
   created_at: string;
   updated_at: string;
 }

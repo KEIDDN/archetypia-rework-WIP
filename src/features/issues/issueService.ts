@@ -24,6 +24,8 @@ export async function createIssue(input: CreateIssueInput): Promise<Issue> {
       description: null,
       status: 'todo',
       priority: 'none',
+      due_date: null,
+      label_id: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
@@ -63,6 +65,46 @@ export async function updateIssuePriority(id: string, priority: IssuePriority): 
     return;
   }
   const { error } = await supabase.from('issues').update({ priority }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function updateIssueTitle(id: string, title: string): Promise<void> {
+  if (!isSupabaseConfigured) {
+    const issue = localIssues.find((i) => i.id === id);
+    if (issue) issue.title = title;
+    return;
+  }
+  const { error } = await supabase.from('issues').update({ title }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function updateIssueDescription(id: string, description: string | null): Promise<void> {
+  if (!isSupabaseConfigured) {
+    const issue = localIssues.find((i) => i.id === id);
+    if (issue) issue.description = description;
+    return;
+  }
+  const { error } = await supabase.from('issues').update({ description }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function updateIssueDueDate(id: string, dueDate: string | null): Promise<void> {
+  if (!isSupabaseConfigured) {
+    const issue = localIssues.find((i) => i.id === id);
+    if (issue) issue.due_date = dueDate;
+    return;
+  }
+  const { error } = await supabase.from('issues').update({ due_date: dueDate }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function updateIssueLabel(id: string, labelId: string | null): Promise<void> {
+  if (!isSupabaseConfigured) {
+    const issue = localIssues.find((i) => i.id === id);
+    if (issue) issue.label_id = labelId;
+    return;
+  }
+  const { error } = await supabase.from('issues').update({ label_id: labelId }).eq('id', id);
   if (error) throw error;
 }
 
